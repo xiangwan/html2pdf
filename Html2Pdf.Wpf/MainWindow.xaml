@@ -1,0 +1,36 @@
+﻿<controls:MetroWindow x:Class="Html2Pdf.Wpf.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:local="clr-namespace:Html2Pdf.Wpf"
+                      Title="MainWindow" Height="350" Width="525" WindowStartupLocation="CenterScreen">
+    <controls:MetroWindow.WindowCommands>
+        <controls:WindowCommands>
+            <Button Content="help" />
+            <Button Content="about"/> 
+        </controls:WindowCommands>
+    </controls:MetroWindow.WindowCommands>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" >
+            <ComboBox Name="CboxDataPath"  SelectionChanged="CboxDataPath_OnSelectionChanged"/>
+            <TextBox Name="TxtDataPath" IsReadOnly="True" TextChanged="TxtDataPath_OnTextChanged" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" >
+            <TextBlock Text="pdf fle save Folder"></TextBlock>
+            <TextBox Name="TxtPdfSaveFolder" IsReadOnly="True"></TextBox>
+            <Button Name="BtnFolderBrower" Content="Browser" Click="BtnFolderBrowser_OnClick"></Button>
+        </StackPanel>
+        <StackPanel Grid.Row="2" >
+            <local:MyTreeView x:Name="MyTree"></local:MyTreeView>
+        </StackPanel>
+        <StackPanel Grid.Row="3" HorizontalAlignment="Center">
+            <Button Name="BtnConvert" Content="Convert To Pdf" Click="BtnConvert_OnClick"></Button>
+        </StackPanel>
+    </Grid>
+</controls:MetroWindow>

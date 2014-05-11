@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Html2Pdf.Core", "Html2Pdf.Core\Html2Pdf.Core.csproj", "{38B33CC6-B1C2-43B9-B9FB-98D7C2A6D143}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Html2Pdf.Wpf", "Html2Pdf.Wpf\Html2Pdf.Wpf.csproj", "{019A7D75-3D84-4A1C-82A6-63E2EAF0D87B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FDD90049-0ED4-41E0-81BD-268B589F820C}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{38B33CC6-B1C2-43B9-B9FB-98D7C2A6D143}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38B33CC6-B1C2-43B9-B9FB-98D7C2A6D143}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38B33CC6-B1C2-43B9-B9FB-98D7C2A6D143}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{38B33CC6-B1C2-43B9-B9FB-98D7C2A6D143}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{38B33CC6-B1C2-43B9-B9FB-98D7C2A6D143}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38B33CC6-B1C2-43B9-B9FB-98D7C2A6D143}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38B33CC6-B1C2-43B9-B9FB-98D7C2A6D143}.Release|x64.ActiveCfg = Release|Any CPU
+		{38B33CC6-B1C2-43B9-B9FB-98D7C2A6D143}.Release|x86.ActiveCfg = Release|Any CPU
+		{019A7D75-3D84-4A1C-82A6-63E2EAF0D87B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{019A7D75-3D84-4A1C-82A6-63E2EAF0D87B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{019A7D75-3D84-4A1C-82A6-63E2EAF0D87B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{019A7D75-3D84-4A1C-82A6-63E2EAF0D87B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{019A7D75-3D84-4A1C-82A6-63E2EAF0D87B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{019A7D75-3D84-4A1C-82A6-63E2EAF0D87B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{019A7D75-3D84-4A1C-82A6-63E2EAF0D87B}.Release|x64.ActiveCfg = Release|Any CPU
+		{019A7D75-3D84-4A1C-82A6-63E2EAF0D87B}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
