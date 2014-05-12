@@ -54,7 +54,7 @@
                                           Tag="{Binding Children}" IsChecked="{Binding IsChecked, Mode=TwoWay}">
                                     <StackPanel Orientation="Horizontal">
                                        <!-- <Image VerticalAlignment="Center" Source="{Binding Icon}" />-->
-                                        <TextBlock Text="{Binding Name}" />
+                                        <TextBlock Text="{Binding Name}" FontSize="15"/>
                                     </StackPanel>
                                    <!-- <CheckBox.ContextMenu>
                                         <ContextMenu>

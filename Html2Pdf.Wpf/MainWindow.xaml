@@ -3,34 +3,92 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       xmlns:local="clr-namespace:Html2Pdf.Wpf"
-                      Title="MainWindow" Height="350" Width="525" WindowStartupLocation="CenterScreen">
+                      Title="Html to Pdf" Height="400" Width="500" 
+                      WindowStartupLocation="CenterScreen"
+                      Icon="logo.ico" ShowIconOnTitleBar="False"> 
     <controls:MetroWindow.WindowCommands>
         <controls:WindowCommands>
-            <Button Content="help" />
-            <Button Content="about"/> 
+            <Button Content="帮助" />
+            <Button Content="关于" />
         </controls:WindowCommands>
     </controls:MetroWindow.WindowCommands>
-    <Grid>
+    <controls:MetroWindow.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="0,0,5,0"></Setter>
+        </Style>
+    </controls:MetroWindow.Resources>
+    <Grid Margin="5,5,5,15">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Grid.Row="0" >
-            <ComboBox Name="CboxDataPath"  SelectionChanged="CboxDataPath_OnSelectionChanged"/>
-            <TextBox Name="TxtDataPath" IsReadOnly="True" TextChanged="TxtDataPath_OnTextChanged" />
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.Row="1" >
-            <TextBlock Text="pdf fle save Folder"></TextBlock>
-            <TextBox Name="TxtPdfSaveFolder" IsReadOnly="True"></TextBox>
-            <Button Name="BtnFolderBrower" Content="Browser" Click="BtnFolderBrowser_OnClick"></Button>
-        </StackPanel>
-        <StackPanel Grid.Row="2" >
-            <local:MyTreeView x:Name="MyTree"></local:MyTreeView>
-        </StackPanel>
-        <StackPanel Grid.Row="3" HorizontalAlignment="Center">
-            <Button Name="BtnConvert" Content="Convert To Pdf" Click="BtnConvert_OnClick"></Button>
+        <Grid Grid.Row="0" Margin="0,5,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text=" PDF文件保存位置：" VerticalAlignment="Center" />
+            <TextBox Name="TxtPdfSaveFolder" Grid.Column="1" IsReadOnly="True" />
+            <Button Name="BtnPdfSaveFolder" Grid.Column="2"  Content="浏览"
+                    Click="BtnPdfSaveFolder_OnClick" />
+        </Grid>
+        <TabControl Grid.Row="1" Name="MyTabs">
+            <TabItem Header="html(evernote)">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition  Height="Auto"></RowDefinition>
+                        <RowDefinition  Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Margin="0,15,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="HTML文件目录：" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="1" Name="TxtHtmlFilesFolder" IsReadOnly="True" />
+                        <Button Grid.Column="2" Name="BtnSelectHtmlFilesFolder" Click="BtnSelectHtmlFilesFolder_OnClick" Content="浏览" />
+                    </Grid>
+                    <Grid Grid.Row="1" Margin="0,15,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" /> 
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="HTML文件搜素模式：" />
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <RadioButton Name="RbtnNoSub" Content="不搜索子目录" IsChecked="True"></RadioButton>
+                            <RadioButton Content="搜索子目录" Margin="10,0,0,0"></RadioButton>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="scrapbook" Loaded="TabScrapbook_OnLoaded">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <ComboBox Name="ComboxScrapbookDataPath"
+                                  SelectionChanged="ComboxScrapbookDataPath_OnSelectionChanged" />
+                        <TextBox Name="TxtScrapbookDataPath" Grid.Column="1" IsReadOnly="True"
+                                 TextChanged="TxtScrapbookDataPath_OnTextChanged" />
+                    </Grid>
+                    <StackPanel Grid.Row="1">
+                        <local:MyTreeView x:Name="MyTree" />
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            
+        </TabControl>
+        <StackPanel Grid.Row="2" HorizontalAlignment="Center">
+            <Button Name="BtnConvert" Content="开始转换为PDF" Click="BtnConvert_OnClick" />
         </StackPanel>
     </Grid>
 </controls:MetroWindow>

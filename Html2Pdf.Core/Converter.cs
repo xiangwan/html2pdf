@@ -52,7 +52,7 @@ namespace Html2Pdf.Core
             return "ok";
         }
 
-        public static string Combine(string[] files)
+        public static string Combine(string[] files, string pdfFileName)
         {
             if (!files.Any())
             {
@@ -62,7 +62,7 @@ namespace Html2Pdf.Core
             Document sourceDocument = null;
             PdfCopy pdfCopyProvider = null;
             PdfImportedPage importedPage;
-            string outputPdfPath =Path.Combine(new DirectoryInfo(files[0]).Parent.Parent.FullName,DateTime.Now.ToString("yyyyMMddHHmmss")+".pdf");
+            string outputPdfPath = Path.Combine(new DirectoryInfo(files[0]).Parent.Parent.FullName, pdfFileName);
 
 
             sourceDocument = new Document();
@@ -71,7 +71,7 @@ namespace Html2Pdf.Core
 
             //Open the output file
             sourceDocument.Open();
-
+           
             try
             {
                 //Loop through the files list
