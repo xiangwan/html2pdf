@@ -211,14 +211,17 @@ namespace Html2Pdf.Wpf
             }
         }
 
-        private  void BtnConvert_OnClick(object sender, RoutedEventArgs e) {
-            var result =   this.ShowInputAsync("设置", "请设置你PDF中文字大小，建议设置为：14");
-            int fontSize;
-            if (int.TryParse(result.Result, out fontSize)) {
-                PdfFontSize = fontSize;
+        private  void BtnConvert_OnClick(object sender, RoutedEventArgs e)
+        {
+            var strFontSize = TxtPdfFontSize.Text;
+            int iFontSize;
+            if (int.TryParse(strFontSize,out iFontSize))
+            {
+                PdfFontSize = iFontSize;
             }
-            else {
-                this.ShowMessageAsync("提示", "请输入有效的数字"); 
+            else
+            {
+                this.ShowMessageAsync("提示", "PDF字体大小必须是数字");
                 return;
             }
             var strPath = TxtPdfSaveFolder.Text;
@@ -293,7 +296,7 @@ namespace Html2Pdf.Wpf
                 if (File.Exists(file)) {
                     var fileName = new FileInfo(file).Name;
                     var pdfPath = Path.Combine(PdfFolderTemp, fileName + ".pdf");
-                    var result = Converter.Run(pdfPath, file);
+                    var result = Converter.Run(pdfPath, file,PdfFontSize);
                     dialog.ReportProgress(i / x * 100, "正在转换，请稍后", "完成..." + fileName);
                 }
             }
@@ -311,7 +314,7 @@ namespace Html2Pdf.Wpf
                 if (File.Exists(htmlFilePath))
                 {
                     var pdfPath = Path.Combine(PdfFolderTemp, node.Name + ".pdf");
-                    var result = Converter.Run(pdfPath, htmlFilePath);
+                    var result = Converter.Run(pdfPath, htmlFilePath,PdfFontSize);
                     dialog.ReportProgress(i / TreeModelChecked.Count * 100,"正在转换，请稍后","完成..."+ node.Name);
                 }
             }

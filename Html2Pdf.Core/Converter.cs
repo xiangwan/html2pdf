@@ -16,7 +16,7 @@ namespace Html2Pdf.Core
             WkHtmlToXLibrariesManager.Register(new Win32NativeBundle());
         }
 
-        public static string Run(string pdfPath, string htmlFullPath)
+        public static string Run(string pdfPath, string htmlFullPath, int pdfFontSize)
         {
             //var pdfName = htmlFullPath.Substring(htmlFullPath.LastIndexOf("\\")+1).Replace(".html", ".pdf");
             var pdfUrl = pdfPath;
@@ -38,7 +38,7 @@ namespace Html2Pdf.Core
                 converter.ObjectSettings.Web.Background = true;
                 converter.ObjectSettings.Web.LoadImages = true;
                 converter.ObjectSettings.Load.LoadErrorHandling = LoadErrorHandlingType.abort;
-                converter.ObjectSettings.Web.MinimumFontSize = 22;
+                converter.ObjectSettings.Web.MinimumFontSize = pdfFontSize;
                 Byte[] bufferPDF = converter.Convert();
                 System.IO.File.WriteAllBytes(pdfUrl, bufferPDF);
                 converter.Dispose();
@@ -58,55 +58,48 @@ namespace Html2Pdf.Core
             {
                 return "empty";
             }
-            PdfReader reader = null;
-            Document sourceDocument = null;
-            PdfCopy pdfCopyProvider = null;
-            PdfImportedPage importedPage;
             string outputPdfPath = Path.Combine(new DirectoryInfo(files[0]).Parent.Parent.FullName, pdfFileName);
 
 
-            sourceDocument = new Document();
-            pdfCopyProvider = new PdfCopy(sourceDocument,
-                new System.IO.FileStream(outputPdfPath, System.IO.FileMode.Create));
 
-            //Open the output file
-            sourceDocument.Open();
-           
             try
             {
-                //Loop through the files list
-                for (int f = 0; f < files.Length - 1; f++)
+                using (FileStream stream = new FileStream(outputPdfPath, FileMode.Create))
+                using (Document doc = new Document())
+                using (PdfCopy pdf = new PdfCopy(doc, stream))
                 {
-                    int pages = GetPageCount(files[f]);
-
-                    reader = new PdfReader(files[f]);
-                    //Add pages of current file
-                    for (int i = 1; i <= pages; i++)
+                    doc.Open();
+                    var rootOutline = pdf.RootOutline;
+                    PdfReader reader = null;
+                    PdfImportedPage page = null;
+                    var pageIndex = 1;
+                    files.ToList().ForEach(file =>
                     {
-                        importedPage = pdfCopyProvider.GetImportedPage(reader, i);
-                        pdfCopyProvider.AddPage(importedPage);
-                    }
-
-                    reader.Close();
+                        reader = new PdfReader(file);
+                        var n = reader.NumberOfPages;
+                        for (int i = 0; i < n; i++)
+                        {
+                            page = pdf.GetImportedPage(reader, i + 1);
+                            pdf.AddPage(page);
+                        }
+                        PdfContentByte cb = pdf.DirectContent;
+                        PdfWriter wrt = cb.PdfWriter;
+                        var title = new FileInfo(file).Name;
+                        var oline = new PdfOutline(rootOutline,
+                            PdfAction.GotoLocalPage(pageIndex, new PdfDestination(pageIndex), wrt), title);
+                        rootOutline.AddKid(oline);
+                        pageIndex += n;
+                        pdf.FreeReader(reader);
+                        reader.Close();
+                    });
                 }
-                //At the end save the output file
-                sourceDocument.Close();
             }
             catch (Exception ex)
             {
                 return "error." + ex.Message;
-            } 
+            }
             return "ok";
         }
 
-        private static int GetPageCount(string file)
-        {
-            using (StreamReader sr = new StreamReader(File.OpenRead(file)))
-            {
-                Regex regex = new Regex(@"/Type\s*/Page[^s]");
-                MatchCollection matches = regex.Matches(sr.ReadToEnd());
-                return matches.Count;
-            }
-        }
     }
 }

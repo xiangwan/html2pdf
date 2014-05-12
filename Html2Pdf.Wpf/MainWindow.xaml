@@ -3,7 +3,7 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       xmlns:local="clr-namespace:Html2Pdf.Wpf"
-                      Title="Html to Pdf" Height="400" Width="500" 
+                      Title="Html to Pdf" Height="400" Width="600" 
                       WindowStartupLocation="CenterScreen"
                       Icon="logo.ico" ShowIconOnTitleBar="False"> 
     <controls:MetroWindow.WindowCommands>
@@ -28,11 +28,16 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="30" /> 
             </Grid.ColumnDefinitions>
             <TextBlock Text=" PDF文件保存位置：" VerticalAlignment="Center" />
             <TextBox Name="TxtPdfSaveFolder" Grid.Column="1" IsReadOnly="True" />
             <Button Name="BtnPdfSaveFolder" Grid.Column="2"  Content="浏览"
                     Click="BtnPdfSaveFolder_OnClick" />
+            <TextBlock Text="PDF字体大小："  Grid.Column="4" VerticalAlignment="Center" />
+            <TextBox Name="TxtPdfFontSize" Grid.Column="5"   Text="14"/>
         </Grid>
         <TabControl Grid.Row="1" Name="MyTabs">
             <TabItem Header="html(evernote)">
@@ -80,8 +85,8 @@
                         <TextBox Name="TxtScrapbookDataPath" Grid.Column="1" IsReadOnly="True"
                                  TextChanged="TxtScrapbookDataPath_OnTextChanged" />
                     </Grid>
-                    <StackPanel Grid.Row="1">
-                        <local:MyTreeView x:Name="MyTree" />
+                    <StackPanel Grid.Row="1" Margin="0,10,0,0"> 
+                            <local:MyTreeView x:Name="MyTree" /> 
                     </StackPanel>
                 </Grid>
             </TabItem>
