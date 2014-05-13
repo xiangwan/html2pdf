@@ -5,7 +5,8 @@
                       xmlns:local="clr-namespace:Html2Pdf.Wpf"
                       Title="Html to Pdf" Height="400" Width="600" 
                       WindowStartupLocation="CenterScreen"
-                      Icon="logo.ico" ShowIconOnTitleBar="False"> 
+                      Icon="logo.ico" ShowIconOnTitleBar="False"
+                      EnableDWMDropShadow="True"> 
     <controls:MetroWindow.WindowCommands>
         <controls:WindowCommands>
             <Button Click="BtnHelp_OnClick">
