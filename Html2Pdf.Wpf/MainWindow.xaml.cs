@@ -21,6 +21,7 @@ using Html2Pdf.Wpf.Models;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
+using NLog;
 using Ookii.Dialogs.Wpf;
 using Path = System.IO.Path;
 using ProgressDialog = Ookii.Dialogs.Wpf.ProgressDialog;
@@ -207,7 +208,7 @@ namespace Html2Pdf.Wpf
                 var file = dialog.FileName;
                 TxtPdfSaveFolder.Text =file ;
                 PdfBaseFolder = new DirectoryInfo(dialog.FileName).Parent.FullName;
-                PdfFileName = new FileInfo(file).Name;
+                PdfFileName = new FileInfo(file).Name.Replace(".pdf","");
             }
         }
 
@@ -250,7 +251,7 @@ namespace Html2Pdf.Wpf
                 }
                var isSearchSub = !(RbtnNoSub.IsChecked.HasValue&&RbtnNoSub.IsChecked.Value);
                var searchOption = isSearchSub ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-               HtmlFiles = "*.html|*.htm".Split('|').SelectMany(filter =>Directory.GetFiles(HtmlBaseFolder, filter, searchOption)).ToArray();
+               HtmlFiles = "*.html".Split('|').SelectMany(filter =>Directory.GetFiles(HtmlBaseFolder, filter, searchOption)).ToArray();
                      
                 if (!HtmlFiles.Any()) {
                     this.ShowMessageAsync("提示", "所选目录没有搜索到任何Html文件："+HtmlBaseFolder);
@@ -294,17 +295,16 @@ namespace Html2Pdf.Wpf
             foreach (var file in HtmlFiles) {
                 i++;
                 if (File.Exists(file)) {
-                    var fileName = new FileInfo(file).Name;
+                    var fileName = new FileInfo(file).Name.Replace(".html","").Replace(".htm","");
                     var pdfPath = Path.Combine(PdfFolderTemp, fileName + ".pdf");
                     var result = Converter.Run(pdfPath, file,PdfFontSize);
-                    dialog.ReportProgress(i / x * 100, "正在转换，请稍后", "完成..." + fileName);
+                    dialog.ReportProgress(i / x * 100, "正在转换，请稍后", result +" ... "+ fileName);
                 }
             }
             CombinePdfs(dialog);
         }
         private void DoScrapbookConvert(object sender, DoWorkEventArgs e)
-        {   
-            
+        {    
             var dialog = (Ookii.Dialogs.Wpf.ProgressDialog)sender;
             var i = 0;
              foreach (var node in TreeModelChecked)
@@ -315,7 +315,7 @@ namespace Html2Pdf.Wpf
                 {
                     var pdfPath = Path.Combine(PdfFolderTemp, node.Name + ".pdf");
                     var result = Converter.Run(pdfPath, htmlFilePath,PdfFontSize);
-                    dialog.ReportProgress(i / TreeModelChecked.Count * 100,"正在转换，请稍后","完成..."+ node.Name);
+                    dialog.ReportProgress(i / TreeModelChecked.Count * 100, "正在转换，请稍后", result + " ... " + node.Name);
                 }
             }
              CombinePdfs(dialog);
@@ -332,6 +332,7 @@ namespace Html2Pdf.Wpf
             if (e.Error!=null)
             {
                 MessageBox.Show("发生错误"+e.Error.Message);
+            
             }
             else
             {
@@ -347,6 +348,15 @@ namespace Html2Pdf.Wpf
             if (result.HasValue&&result.Value) {
                 TxtHtmlFilesFolder.Text = dialog.SelectedPath; 
             }
+        }
+
+        private void BtnHelp_OnClick(object sender, RoutedEventArgs e) {
+            System.Diagnostics.Process.Start("https://github.com/xiangwan/html2pdf");
+        }
+
+        private void BtnAbout_OnClick(object sender, RoutedEventArgs e) {
+            var version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
+            this.ShowMessageAsync("关于", string.Format("html to pdf verson {0} . \r\ncreate by xiangwan", version));
         }
     }
 }

@@ -8,8 +8,10 @@
                       Icon="logo.ico" ShowIconOnTitleBar="False"> 
     <controls:MetroWindow.WindowCommands>
         <controls:WindowCommands>
-            <Button Content="帮助" />
-            <Button Content="关于" />
+            <Button Click="BtnHelp_OnClick">
+                帮助 
+            </Button>
+            <Button Content="关于" Click="BtnAbout_OnClick" />
         </controls:WindowCommands>
     </controls:MetroWindow.WindowCommands>
     <controls:MetroWindow.Resources>

@@ -16,9 +16,10 @@ namespace Html2Pdf.Core
             WkHtmlToXLibrariesManager.Register(new Win32NativeBundle());
         }
 
-        public static string Run(string pdfPath, string htmlFullPath, int pdfFontSize)
-        {
-            //var pdfName = htmlFullPath.Substring(htmlFullPath.LastIndexOf("\\")+1).Replace(".html", ".pdf");
+        public static string Run(string pdfPath, string htmlFullPath, int pdfFontSize) {
+            var htmlTemp = Path.Combine(new DirectoryInfo(htmlFullPath).Parent.FullName,
+                    Guid.NewGuid().ToString() + ".html");  
+            File.Copy(htmlFullPath,htmlTemp);
             var pdfUrl = pdfPath;
             try
             {
@@ -32,7 +33,7 @@ namespace Html2Pdf.Core
                 converter.GlobalSettings.Margin.Left = "0cm";
                 converter.GlobalSettings.Margin.Right = "0cm";
 
-                converter.ObjectSettings.Page = htmlFullPath;
+                converter.ObjectSettings.Page = htmlTemp;
                 converter.ObjectSettings.Web.EnablePlugins = true;
                 converter.ObjectSettings.Web.EnableJavascript = true;
                 converter.ObjectSettings.Web.Background = true;
@@ -45,10 +46,11 @@ namespace Html2Pdf.Core
 
                 #endregion
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
+                File.Delete(htmlTemp);
                 return "error." + ex.Message;
             }
+            File.Delete(htmlTemp);
             return "ok";
         }
 
@@ -58,20 +60,29 @@ namespace Html2Pdf.Core
             {
                 return "empty";
             }
-            string outputPdfPath = Path.Combine(new DirectoryInfo(files[0]).Parent.Parent.FullName, pdfFileName);
-
-
-
+            string outputPdfPath = Path.Combine(new DirectoryInfo(files[0]).Parent.Parent.FullName, pdfFileName+".pdf");
+             
             try
             {
                 using (FileStream stream = new FileStream(outputPdfPath, FileMode.Create))
                 using (Document doc = new Document())
                 using (PdfCopy pdf = new PdfCopy(doc, stream))
                 {
-                    doc.Open();
+                    doc.Open(); 
+                    doc.AddTitle(pdfFileName);
+/*
+                    doc.NewPage();  
+                    doc.Add(new Paragraph(pdfFileName));
+                    doc.Add(new Paragraph("power by "));
+                    Anchor anchor = new Anchor("html2pdf");
+                    anchor.Reference = "https://github.com/xiangwan/html2pdf"; 
+                    doc.Add(anchor);*/
+                    
                     var rootOutline = pdf.RootOutline;
                     PdfReader reader = null;
                     PdfImportedPage page = null;
+                    PdfContentByte cb = pdf.DirectContent;
+                    PdfWriter wrt = cb.PdfWriter;
                     var pageIndex = 1;
                     files.ToList().ForEach(file =>
                     {
@@ -82,9 +93,8 @@ namespace Html2Pdf.Core
                             page = pdf.GetImportedPage(reader, i + 1);
                             pdf.AddPage(page);
                         }
-                        PdfContentByte cb = pdf.DirectContent;
-                        PdfWriter wrt = cb.PdfWriter;
-                        var title = new FileInfo(file).Name;
+                       
+                        var title = new FileInfo(file).Name.Replace(".pdf","");
                         var oline = new PdfOutline(rootOutline,
                             PdfAction.GotoLocalPage(pageIndex, new PdfDestination(pageIndex), wrt), title);
                         rootOutline.AddKid(oline);
