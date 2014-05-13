@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using NLog;
 using WkHtmlToXSharp;
 
 namespace Html2Pdf.Core
 {
-    public class Converter
-    {
+    public class Converter{
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         static Converter()
         {
             WkHtmlToXLibrariesManager.Register(new Win64NativeBundle());
@@ -48,6 +49,7 @@ namespace Html2Pdf.Core
             }
             catch (Exception ex) {
                 File.Delete(htmlTemp);
+                logger.Error(ex);
                 return "error." + ex.Message;
             }
             File.Delete(htmlTemp);
@@ -106,6 +108,7 @@ namespace Html2Pdf.Core
             }
             catch (Exception ex)
             {
+                logger.Error(ex);
                 return "error." + ex.Message;
             }
             return "ok";

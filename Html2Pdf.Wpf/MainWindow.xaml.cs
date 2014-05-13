@@ -41,10 +41,11 @@ namespace Html2Pdf.Wpf
         public string HtmlBaseFolder { get; set; } 
         public bool TabScrapbookIsReady { get; set; }
         public string[] HtmlFiles { get; set; }
-
+        private Logger logger = LogManager.GetCurrentClassLogger();
         public MainWindow()
         {
             InitializeComponent(); 
+            logger.Info("run html2pdf");
         }
         #region  scrapbook tab
         private void TabScrapbook_OnLoaded(object sender, RoutedEventArgs e) {
@@ -331,8 +332,8 @@ namespace Html2Pdf.Wpf
         {
             if (e.Error!=null)
             {
-                MessageBox.Show("发生错误"+e.Error.Message);
-            
+                logger.Error(e.Error);
+                MessageBox.Show("发生错误"+e.Error.Message); 
             }
             else
             {
@@ -356,7 +357,7 @@ namespace Html2Pdf.Wpf
 
         private void BtnAbout_OnClick(object sender, RoutedEventArgs e) {
             var version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
-            this.ShowMessageAsync("关于", string.Format("html to pdf verson {0} . \r\ncreate by xiangwan", version));
+            this.ShowMessageAsync("关于", string.Format("html to pdf 版本 {0} . \r\n向晚出品", version));
         }
     }
 }
